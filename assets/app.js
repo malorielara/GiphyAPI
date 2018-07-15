@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     var gifCount = 0;
 
+    // click listener to animalButton
     $("#addAnimal").on("click", function (event) {
         event.preventDefault();
         var animal = $("#animal-input").val().trim();
@@ -21,6 +22,7 @@ $(document).ready(function () {
 
         gifCount++;
 
+        // event listener to all buttons
         $("button").on("click", function () {
             var animalGIF = animal;
             console.log(animalGIF);
@@ -28,6 +30,7 @@ $(document).ready(function () {
             var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
                 animalGIF + "&api_key=dc6zaTOxFJmzC&limit=10";
 
+            // ajax with queryURL
             $.ajax({
                     url: queryURL,
                     method: "GET"
@@ -37,13 +40,16 @@ $(document).ready(function () {
                     console.log(queryURL);
                     console.log(response);
 
+                    // store ajax in the var results
                     var results = response.data;
 
+                    // going through each item
+                    // creating and storing a div, p, and an image tag
                     for (var i = 0; i < results.length; i++) {
                         var animalDiv = $("<div>");
                         var p = $("<p>").text("Rating: " + results[i].rating);
                         var animalImg = $("<img>").addClass("gif");
-
+                        
                         animalImg.attr("src", results[i].images.fixed_height.url);
                         animalImg.attr("data-animate", results[i].images.fixed_height.url);
                         animalImg.attr("data-still", results[i].images.fixed_height_still.url);
@@ -53,7 +59,7 @@ $(document).ready(function () {
 
                         $("#gifs-aqui").prepend(animalDiv);
                     }
-
+                    // animate click function
                     $(".gif").on("click", function () {
                         var dataState = $(this).attr("data-state");
                         if (dataState === "animate") {
