@@ -7,6 +7,19 @@ $(document).ready(function () {
         var animal = $("#animal-input").val().trim();
         console.log(animal);
 
+        var gifClose = $("<button>");
+
+        gifClose.attr("animal-name", animal);
+        gifClose.attr("type", "button");
+        gifClose.attr("type", "submit");
+        gifClose.addClass("btn btn-primary");
+        gifClose.text(animal);
+
+        $("#animal").append(gifClose);
+
+        $("#animal-input").val("");
+
+        gifCount++;
     })
 
-});
+}); 
