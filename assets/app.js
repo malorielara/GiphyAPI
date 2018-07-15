@@ -26,12 +26,35 @@ $(document).ready(function () {
             console.log(animalGIF);
 
             var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-                animalGIF + "nMLsHe4G2iHbzGDVgavSkLcWuawzamy6";
+                animalGIF + "&api_key=dc6zaTOxFJmzC&limit=10";
 
             $.ajax({
-                    url: queryURL,
-                    method: "GET"
+                url: queryURL,
+                method: "GET"
             })
-    })
 
-}); 
+            .done(function (response) {
+                console.log(queryURL);
+                console.log(response);
+
+                var results = response.data;
+
+                for (var i = 0; i < results.length; i++) {
+                    var animalDiv = $("<div>");
+                    var p = $("<p>").text("Rating: " + results[i].rating);
+                    var animalImg = $("<img>").addClass("gif");
+
+                    animalImg.attr("src", results[i].images.fixed_height.url);
+                    animalImg.attr("data-animate", results[i].images.fixed_height.url);
+                    animalImg.attr("data-still", results[i].images.fixed_height_still.url);
+                    animalImg.attr("data-state", "animate");
+                    animalDiv.append(p);
+                    animalDiv.append(animalImg);
+
+                    $("#gifs-aqui").prepend(animalDiv);
+                }
+            });
+        })
+
+    });
+});
