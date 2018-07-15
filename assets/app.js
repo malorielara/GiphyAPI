@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-var gifCount = 0;
+    var gifCount = 0;
 
     $("#addAnimal").on("click", function (event) {
         event.preventDefault();
@@ -26,47 +26,45 @@ var gifCount = 0;
             console.log(animalGIF);
 
             var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-                animalGIF + "nMLsHe4G2iHbzGDVgavSkLcWuawzamy6";
+                animalGIF + "&api_key=dc6zaTOxFJmzC&limit=10";
 
             $.ajax({
-                url: queryURL,
-                method: "GET"
-            })
-            $("button").on("click", function () {
-                var animalGIF = animal;
-                console.log(animalGIF);
+                    url: queryURL,
+                    method: "GET"
+                })
 
-                var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-                    animalGIF + "&api_key=dc6zaTOxFJmzC&limit=10";
+                .done(function (response) {
+                    console.log(queryURL);
+                    console.log(response);
 
-                $.ajax({
-                        url: queryURL,
-                        method: "GET"
-                    })
+                    var results = response.data;
 
-                    .done(function (response) {
-                        console.log(queryURL);
-                        console.log(response);
+                    for (var i = 0; i < results.length; i++) {
+                        var animalDiv = $("<div>");
+                        var p = $("<p>").text("Rating: " + results[i].rating);
+                        var animalImg = $("<img>").addClass("gif");
 
-                        var results = response.data;
+                        animalImg.attr("src", results[i].images.fixed_height.url);
+                        animalImg.attr("data-animate", results[i].images.fixed_height.url);
+                        animalImg.attr("data-still", results[i].images.fixed_height_still.url);
+                        animalImg.attr("data-state", "animate");
+                        animalDiv.append(p);
+                        animalDiv.append(animalImg);
 
-                        for (var i = 0; i < results.length; i++) {
-                            var animalDiv = $("<div>");
-                            var p = $("<p>").text("Rating: " + results[i].rating);
-                            var animalImg = $("<img>").addClass("gif");
+                        $("#gifs-aqui").prepend(animalDiv);
+                    }
 
-                            animalImg.attr("src", results[i].images.fixed_height.url);
-                            animalImg.attr("data-animate", results[i].images.fixed_height.url);
-                            animalImg.attr("data-still", results[i].images.fixed_height_still.url);
-                            animalImg.attr("data-state", "animate");
-                            animalDiv.append(p);
-                            animalDiv.append(animalImg);
-
-                            $("#gifs-aqui").prepend(animalDiv);
+                    $(".gif").on("click", function () {
+                        var dataState = $(this).attr("data-state");
+                        if (dataState === "animate") {
+                            $(this).attr("src", $(this).attr("data-still"));
+                            $(this).attr("data-state", "still");
+                        } else {
+                            $(this).attr("src", $(this).attr("data-animate"));
+                            $(this).attr("data-state", "animate");
                         }
                     });
-            })
+                })
         })
-
-    });
+    })
 });
