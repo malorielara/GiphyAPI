@@ -20,6 +20,18 @@ $(document).ready(function () {
         $("#animal-input").val("");
 
         gifCount++;
+
+        $("button").on("click", function () {
+            var animalGIF = animal;
+            console.log(animalGIF);
+
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+                animalGIF + "nMLsHe4G2iHbzGDVgavSkLcWuawzamy6";
+
+            $.ajax({
+                    url: queryURL,
+                    method: "GET"
+            })
     })
 
 }); 
